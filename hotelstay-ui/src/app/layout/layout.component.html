@@ -1,0 +1,32 @@
+<header class="app-header">
+  <mat-toolbar color="primary" class="navbar">
+    <button
+      mat-icon-button
+      (click)="goHome()"
+      class="logo-button"
+      matTooltip="Back to Home"
+    >
+      <mat-icon>home_stay</mat-icon>
+    </button>
+
+    <span class="app-title">HotelStay</span>
+    <span class="app-subtitle">Hotel Search & Booking</span>
+
+    <span class="spacer"></span>
+
+    <button mat-icon-button matTooltip="About">
+      <mat-icon>info</mat-icon>
+    </button>
+  </mat-toolbar>
+</header>
+
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="app-footer">
+  <div class="footer-content">
+    <p>&copy; 2024 HotelStay. All rights reserved.</p>
+    <p>Powered by Angular 20 & .NET Core 8</p>
+  </div>
+</footer>

@@ -1,0 +1,177 @@
+<div class="confirmation-container" *ngIf="bookingData">
+  <!-- Success/Status Card -->
+  <mat-card class="status-card" [ngClass]="'status-' + bookingData.status.toLowerCase()">
+    <mat-card-content>
+      <div class="status-icon">
+        <mat-icon [class]="'icon-' + getStatusColor()">{{ getStatusIcon() }}</mat-icon>
+      </div>
+      <h1>Booking {{ bookingData.status }}</h1>
+      <p class="status-message">
+        <span *ngIf="bookingData.status === 'Confirmed'">
+          Your hotel room has been successfully booked!
+        </span>
+        <span *ngIf="bookingData.status === 'Pending'">
+          Your booking is pending confirmation.
+        </span>
+        <span *ngIf="bookingData.status === 'Failed'">
+          Unfortunately, your booking could not be completed.
+        </span>
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Reference Number Card -->
+  <mat-card class="reference-card" *ngIf="bookingData.referenceNumber">
+    <mat-card-header>
+      <mat-card-title>Booking Reference</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="reference-display">
+        <code class="reference-number">{{ bookingData.referenceNumber }}</code>
+        <button
+          mat-icon-button
+          matTooltip="Copy to clipboard"
+          (click)="copyReference()"
+          class="copy-button"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+      <p class="hint">Please save this reference for future inquiries</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Booking Details Card -->
+  <mat-card class="details-card">
+    <mat-card-header>
+      <mat-card-title>Booking Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="details-grid">
+        <!-- Guest Information -->
+        <div class="detail-section">
+          <h3>Guest Information</h3>
+          <div class="detail-item">
+            <span class="label">Name:</span>
+            <span class="value">{{ bookingData.firstName }} {{ bookingData.lastName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Destination:</span>
+            <span class="value">{{ bookingData.destination }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Hotel Information -->
+        <div class="detail-section">
+          <h3>Hotel Information</h3>
+          <div class="detail-item">
+            <span class="label">Hotel:</span>
+            <span class="value">{{ bookingData.hotelName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Provider:</span>
+            <span class="value">{{ bookingData.providerName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Room Type:</span>
+            <span class="value">{{ bookingData.roomType }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Stay Information -->
+        <div class="detail-section">
+          <h3>Stay Information</h3>
+          <div class="detail-item">
+            <span class="label">Check-in:</span>
+            <span class="value">{{ formatDate(bookingData.checkInDate) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Check-out:</span>
+            <span class="value">{{ formatDate(bookingData.checkOutDate) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Number of Nights:</span>
+            <span class="value">{{ bookingData.numberOfNights }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Price Information -->
+        <div class="detail-section">
+          <h3>Price Information</h3>
+          <div class="detail-item">
+            <span class="label">Nightly Rate:</span>
+            <span class="value">{{ formatPrice(bookingData.nightlyRate) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Number of Nights:</span>
+            <span class="value">{{ bookingData.numberOfNights }}</span>
+          </div>
+          <div class="detail-item total">
+            <span class="label">Total Price:</span>
+            <span class="value">{{ formatPrice(bookingData.totalPrice) }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Cancellation Policy -->
+        <div class="detail-section">
+          <h3>Cancellation Policy</h3>
+          <div class="detail-item">
+            <span class="label">Policy:</span>
+            <span class="value">{{ getCancellationPolicyText(getEffectiveCancellationPolicy()) }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Booking Time -->
+        <div class="detail-section">
+          <h3>Booking Information</h3>
+          <div class="detail-item">
+            <span class="label">Booked On:</span>
+            <span class="value">{{ formatDate(bookingData.bookingDateTime) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Status:</span>
+            <span class="value" [ngClass]="'status-badge-' + bookingData.status.toLowerCase()">
+              {{ bookingData.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="newSearch()"
+      class="search-again-button"
+    >
+      <mat-icon>search</mat-icon>
+      Search Again
+    </button>
+  </div>
+</div>
+
+<!-- No Booking Data -->
+<div class="no-data" *ngIf="!bookingData">
+  <mat-card>
+    <mat-card-content>
+      <mat-icon class="error-icon">error</mat-icon>
+      <p>No booking data available.</p>
+      <button mat-raised-button color="primary" (click)="newSearch()">
+        Back to Search
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>

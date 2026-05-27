@@ -1,0 +1,159 @@
+<div class="booking-container">
+  <!-- Selected Room Summary -->
+  <mat-card class="summary-card" *ngIf="selectedRoom">
+    <mat-card-header>
+      <mat-card-title>Booking Summary</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <strong>Hotel:</strong>
+          <p>{{ selectedRoom.hotelName }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Destination:</strong>
+          <p>{{ selectedRoom.destination }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Check-in:</strong>
+          <p>{{ formatDate(selectedRoom.checkInDate) }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Check-out:</strong>
+          <p>{{ formatDate(selectedRoom.checkOutDate) }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Room Type:</strong>
+          <p>{{ selectedRoom.roomType }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Provider:</strong>
+          <p>{{ selectedRoom.providerName }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Nightly Rate:</strong>
+          <p>{{ formatPrice(selectedRoom.nightlyRate) }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Number of Nights:</strong>
+          <p>{{ selectedRoom.numberOfNights }}</p>
+        </div>
+        <div class="summary-item">
+          <strong>Cancellation Policy:</strong>
+          <p>{{ getCancellationPolicyText(selectedRoom.cancellationPolicy) }}</p>
+        </div>
+        <div class="summary-item highlight">
+          <strong>Total Price:</strong>
+          <p class="total">{{ formatPrice(getTotalPrice()) }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Booking Form -->
+  <mat-card class="booking-form-card">
+    <mat-card-header>
+      <mat-card-title>Guest Information</mat-card-title>
+      <mat-card-subtitle>Please provide your personal and document details</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="bookingForm" class="booking-form">
+        <!-- First Name -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" type="text" />
+          <mat-error *ngIf="isFieldInvalid('firstName')">
+            {{ getErrorMessage('firstName') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Last Name -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" type="text" />
+          <mat-error *ngIf="isFieldInvalid('lastName')">
+            {{ getErrorMessage('lastName') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Destination (Read-only) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Destination</mat-label>
+          <input matInput formControlName="destination" type="text" readonly />
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+
+        <h3>Document Information</h3>
+
+        <!-- Document Type -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Document Type</mat-label>
+          <mat-select formControlName="documentType">
+            <mat-option value="">Select Document Type</mat-option>
+            <mat-option
+              *ngFor="let docType of allowedDocumentTypes"
+              [value]="docType"
+            >
+              {{ docType }}
+            </mat-option>
+          </mat-select>
+          <mat-hint *ngIf="selectedRoom?.destination">
+            <span *ngIf="isFieldInvalid('documentType')">
+              {{ getErrorMessage('documentType') }}
+            </span>
+            <span *ngIf="!isFieldInvalid('documentType')" class="hint-text">
+              Valid documents for {{ selectedRoom?.destination }}
+            </span>
+          </mat-hint>
+          <mat-error *ngIf="isFieldInvalid('documentType')">
+            {{ getErrorMessage('documentType') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Document Number -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Document Number</mat-label>
+          <input
+            matInput
+            formControlName="documentNumber"
+            type="text"
+            placeholder="e.g., ABC123456"
+            [disabled]="!this.bookingForm.get('documentType')?.value"
+          />
+          <mat-error *ngIf="isFieldInvalid('documentNumber')">
+            {{ getErrorMessage('documentNumber') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="onSubmit()"
+            [disabled]="isLoading || bookingForm.invalid"
+            class="submit-button"
+          >
+            <span *ngIf="!isLoading">Confirm Booking</span>
+            <mat-spinner
+              *ngIf="isLoading"
+              diameter="20"
+              class="button-spinner"
+            ></mat-spinner>
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="onCancel()"
+            [disabled]="isLoading"
+          >
+            Back to Results
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

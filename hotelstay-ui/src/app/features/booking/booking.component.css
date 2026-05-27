@@ -1,0 +1,166 @@
+.booking-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.summary-card,
+.booking-form-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.summary-card mat-card-header {
+  color: white;
+}
+
+.summary-card mat-card-title {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.summary-item {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 0.25rem;
+}
+
+.summary-item p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.summary-item.highlight {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-item.highlight strong {
+  margin-bottom: 0;
+}
+
+.summary-item.highlight .total {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.booking-form-card mat-card-header {
+  margin-bottom: 1.5rem;
+}
+
+.booking-form-card mat-card-title {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.booking-form-card mat-card-subtitle {
+  color: #666;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.booking-form h3 {
+  margin: 1rem 0 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+mat-divider {
+  margin: 1.5rem 0 !important;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.submit-button {
+  min-width: 160px;
+  position: relative;
+}
+
+.button-spinner {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.hint-text {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .booking-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-item.highlight {
+    grid-column: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .submit-button {
+    width: 100%;
+  }
+}
+
+@media (min-width: 900px) {
+  .booking-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .summary-card {
+    grid-row: 1 / 3;
+  }
+}

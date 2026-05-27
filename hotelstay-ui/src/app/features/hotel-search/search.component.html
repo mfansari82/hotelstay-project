@@ -1,0 +1,108 @@
+<div class="search-container">
+  <mat-card class="search-card">
+    <mat-card-header>
+      <mat-card-title>Find Your Perfect Hotel</mat-card-title>
+      <mat-card-subtitle>Search and compare hotels from multiple providers</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="searchForm" class="search-form">
+        <!-- Destination Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Destination</mat-label>
+          <mat-select formControlName="destination">
+            <mat-optgroup label="Domestic Destinations">
+              <mat-option
+                *ngFor="let dest of destinations.slice(0, 2)"
+                [value]="dest"
+              >
+                {{ dest }}
+              </mat-option>
+            </mat-optgroup>
+            <mat-optgroup label="International Destinations">
+              <mat-option
+                *ngFor="let dest of destinations.slice(2)"
+                [value]="dest"
+              >
+                {{ dest }}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+          <mat-error *ngIf="isFieldInvalid('destination')">
+            {{ getErrorMessage('destination') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Check-in Date Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Check-in Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="checkInPicker"
+            formControlName="checkInDate"
+            [min]="''"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="checkInPicker"></mat-datepicker-toggle>
+          <mat-datepicker #checkInPicker></mat-datepicker>
+          <mat-error *ngIf="isFieldInvalid('checkInDate')">
+            {{ getErrorMessage('checkInDate') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Check-out Date Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Check-out Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="checkOutPicker"
+            formControlName="checkOutDate"
+            [min]="minCheckoutDate"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
+          <mat-datepicker #checkOutPicker></mat-datepicker>
+          <mat-error *ngIf="isFieldInvalid('checkOutDate')">
+            {{ getErrorMessage('checkOutDate') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Room Type Field (Optional) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Room Type (Optional)</mat-label>
+          <mat-select formControlName="roomType">
+            <mat-option value="">Any Room Type</mat-option>
+            <mat-option *ngFor="let room of roomTypes" [value]="room.value">
+              {{ room.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="onSearch()"
+            [disabled]="isLoading"
+            class="search-button"
+          >
+            <span *ngIf="!isLoading">Search Hotels</span>
+            <mat-spinner
+              *ngIf="isLoading"
+              diameter="20"
+              class="button-spinner"
+            ></mat-spinner>
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="onReset()"
+            [disabled]="isLoading"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

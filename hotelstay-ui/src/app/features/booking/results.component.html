@@ -1,0 +1,109 @@
+<div class="results-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Searching hotels...</p>
+  </div>
+
+  <!-- No Results -->
+  <div *ngIf="!isLoading && hotelResults.length === 0" class="no-results">
+    <mat-card>
+      <mat-card-content>
+        <p>No hotels found matching your criteria.</p>
+        <button mat-raised-button color="primary" (click)="backToSearch()">
+          Back to Search
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Results Header -->
+  <div *ngIf="!isLoading && hotelResults.length > 0" class="results-header">
+    <h2>{{ hotelResults.length }} Hotel(s) Found</h2>
+    <button mat-stroked-button (click)="backToSearch()">
+      <mat-icon>arrow_back</mat-icon>
+      New Search
+    </button>
+  </div>
+
+  <!-- Results List -->
+  <div *ngIf="!isLoading && sortedResults.length > 0" class="results-list">
+    <mat-card *ngFor="let hotel of sortedResults" class="hotel-card">
+      <!-- Hotel Header -->
+      <mat-card-header>
+        <div class="hotel-header-content">
+          <div>
+            <mat-card-title>{{ hotel.hotelName }}</mat-card-title>
+            <mat-card-subtitle>{{ hotel.destination }}</mat-card-subtitle>
+            <span *ngIf="hotel.providerName" [matBadge]="hotel.providerName" matBadgeColor="primary">
+            </span>
+          </div>
+          <div class="hotel-dates">
+            <small>
+              {{ formatDate(hotel.checkInDate) }} - {{ formatDate(hotel.checkOutDate) }}
+            </small>
+            <small>({{ hotel.numberOfNights }} night<span *ngIf="hotel.numberOfNights !== 1">s</span>)</small>
+          </div>
+        </div>
+      </mat-card-header>
+
+      <!-- Hotel Content -->
+      <mat-card-content>
+        <!-- Rooms Table -->
+        <div class="rooms-section">
+          <table class="rooms-table">
+            <thead>
+              <tr>
+                <th>Room Type</th>
+                <th>Per Night</th>
+                <th>Total Price</th>
+                <th>Cancellation Policy</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let room of hotel.rooms" class="room-row">
+                <td class="room-type">{{ room.roomType }}</td>
+                <td class="price">{{ formatPrice(room.nightlyRate) }}</td>
+                <td class="total-price">
+                  <strong>{{ formatPrice(getTotalPrice(room.nightlyRate, hotel.numberOfNights)) }}</strong>
+                </td>
+                <td class="policy">
+                  <mat-chip class="policy-chip">
+                    <mat-icon>{{ getCancellationPolicyIcon(getEffectiveCancellationPolicy(hotel, room.cancellationPolicy)) }}</mat-icon>
+                    <span>{{ getCancellationPolicyText(getEffectiveCancellationPolicy(hotel, room.cancellationPolicy)) }}</span>
+                  </mat-chip>
+                </td>
+                <td class="action">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="selectRoom(hotel, room)"
+                    [disabled]="isLoading"
+                  >
+                    Select
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Additional Info -->
+        <div *ngIf="hotel.rooms[0]?.amenities" class="additional-info">
+          <h4>Amenities</h4>
+          <mat-chip-set>
+            <mat-chip *ngFor="let amenity of hotel.rooms[0].amenities">
+              {{ amenity }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <div *ngIf="hotel.rooms[0]?.starRating" class="additional-info">
+          <h4>Star Rating</h4>
+          <p>{{ hotel.rooms[0].starRating }} / 5 ⭐</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
