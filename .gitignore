@@ -1,0 +1,29 @@
+# =========================
+# Angular
+# =========================
+frontend/hotelstay-ui/node_modules/
+frontend/hotelstay-ui/dist/
+frontend/hotelstay-ui/.angular/
+frontend/hotelstay-ui/coverage/
+
+# =========================
+# .NET Core
+# =========================
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Environment files
+.env
+
+# OS files
+Thumbs.db
+.DS_Store
+/HotelStay.Api/logs
